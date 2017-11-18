@@ -104,6 +104,8 @@ endif
 	$$(foreach hook,$$(ROOTFS_POST_CMD_HOOKS),\
 		$$(call PRINTF,$$($$(hook))) >> $$(FAKEROOT_SCRIPT))
 	chmod a+x $$(FAKEROOT_SCRIPT)
+	if [ `uname -r | grep "Microsoft"` ] ; then \
+		cp -f `which fakeroot-tcp` $$(HOST_DIR)/bin/fakeroot ; fi
 	PATH=$$(BR_PATH) $$(HOST_DIR)/bin/fakeroot -- $$(FAKEROOT_SCRIPT)
 	$$(INSTALL) -m 0644 support/misc/target-dir-warning.txt $$(TARGET_DIR_WARNING_FILE)
 	-@rm -f $$(FAKEROOT_SCRIPT) $$(FULL_DEVICE_TABLE)
